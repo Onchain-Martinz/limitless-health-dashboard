@@ -13,6 +13,9 @@ type FeesResponse = {
   points: FeesPoint[];
 };
 
+const SEASON1_START = "2025-07-01";
+const SEASON1_END = "2025-09-22";
+
 type LineChartPoint = {
   date: string;
   dailyFees: number;
@@ -146,6 +149,176 @@ export default function App() {
                 : "N/A"}
             </p>
           </section>
+
+          {(() => {
+            const pre = data.points.filter(
+              (point) => point.date < SEASON1_START
+            );
+            const season1 = data.points.filter(
+              (point) =>
+                point.date >= SEASON1_START && point.date <= SEASON1_END
+            );
+            const post = data.points.filter(
+              (point) => point.date > SEASON1_END
+            );
+
+            const getStats = (points: FeesPoint[]) => {
+              const days = points.length;
+              const totalFees = points.reduce(
+                (sum, point) => sum + point.dailyFees,
+                0
+              );
+              const avgDailyFees = days > 0 ? totalFees / days : 0;
+              const maxDailyFees =
+                days > 0
+                  ? Math.max(...points.map((point) => point.dailyFees))
+                  : 0;
+              const startDate = days > 0 ? points[0].date : "N/A";
+              const endDate = days > 0 ? points[days - 1].date : "N/A";
+
+              return {
+                days,
+                totalFees,
+                avgDailyFees,
+                maxDailyFees,
+                startDate,
+                endDate,
+              };
+            };
+
+            const preStats = getStats(pre);
+            const season1Stats = getStats(season1);
+            const postStats = getStats(post);
+
+            const cardStyle = {
+              background: "#1e1e1e",
+              color: "#f5f5f5",
+              padding: 16,
+              borderRadius: 12,
+              border: "1px solid #2b2b2b",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+              minWidth: 280,
+              flex: "1 1 280px",
+            };
+
+            const labelStyle = { color: "#bdbdbd" };
+            const valueStyle = { fontWeight: 600 };
+
+            return (
+              <section style={{ marginTop: 16 }}>
+                <h3>Season 1 Impact (Gross Fees)</h3>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: 16,
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <div style={cardStyle}>
+                    <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>
+                      Pre Season 1
+                    </div>
+                    <p>
+                      <span style={labelStyle}>Date range:</span>{" "}
+                      <span style={valueStyle}>
+                        {preStats.startDate} to {preStats.endDate}
+                      </span>
+                    </p>
+                    <p>
+                      <span style={labelStyle}>Total fees:</span>{" "}
+                      <span style={valueStyle}>
+                        {preStats.totalFees.toLocaleString()}
+                      </span>
+                    </p>
+                    <p>
+                      <span style={labelStyle}>Avg daily fees:</span>{" "}
+                      <span style={valueStyle}>
+                        {preStats.avgDailyFees.toLocaleString()}
+                      </span>
+                    </p>
+                    <p>
+                      <span style={labelStyle}>Peak daily fees:</span>{" "}
+                      <span style={valueStyle}>
+                        {preStats.maxDailyFees.toLocaleString()}
+                      </span>
+                    </p>
+                    <p>
+                      <span style={labelStyle}>Days counted:</span>{" "}
+                      <span style={valueStyle}>{preStats.days}</span>
+                    </p>
+                  </div>
+
+                  <div style={cardStyle}>
+                    <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>
+                      During Season 1
+                    </div>
+                    <p>
+                      <span style={labelStyle}>Date range:</span>{" "}
+                      <span style={valueStyle}>
+                        {season1Stats.startDate} to {season1Stats.endDate}
+                      </span>
+                    </p>
+                    <p>
+                      <span style={labelStyle}>Total fees:</span>{" "}
+                      <span style={valueStyle}>
+                        {season1Stats.totalFees.toLocaleString()}
+                      </span>
+                    </p>
+                    <p>
+                      <span style={labelStyle}>Avg daily fees:</span>{" "}
+                      <span style={valueStyle}>
+                        {season1Stats.avgDailyFees.toLocaleString()}
+                      </span>
+                    </p>
+                    <p>
+                      <span style={labelStyle}>Peak daily fees:</span>{" "}
+                      <span style={valueStyle}>
+                        {season1Stats.maxDailyFees.toLocaleString()}
+                      </span>
+                    </p>
+                    <p>
+                      <span style={labelStyle}>Days counted:</span>{" "}
+                      <span style={valueStyle}>{season1Stats.days}</span>
+                    </p>
+                  </div>
+
+                  <div style={cardStyle}>
+                    <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>
+                      Post Season 1
+                    </div>
+                    <p>
+                      <span style={labelStyle}>Date range:</span>{" "}
+                      <span style={valueStyle}>
+                        {postStats.startDate} to {postStats.endDate}
+                      </span>
+                    </p>
+                    <p>
+                      <span style={labelStyle}>Total fees:</span>{" "}
+                      <span style={valueStyle}>
+                        {postStats.totalFees.toLocaleString()}
+                      </span>
+                    </p>
+                    <p>
+                      <span style={labelStyle}>Avg daily fees:</span>{" "}
+                      <span style={valueStyle}>
+                        {postStats.avgDailyFees.toLocaleString()}
+                      </span>
+                    </p>
+                    <p>
+                      <span style={labelStyle}>Peak daily fees:</span>{" "}
+                      <span style={valueStyle}>
+                        {postStats.maxDailyFees.toLocaleString()}
+                      </span>
+                    </p>
+                    <p>
+                      <span style={labelStyle}>Days counted:</span>{" "}
+                      <span style={valueStyle}>{postStats.days}</span>
+                    </p>
+                  </div>
+                </div>
+              </section>
+            );
+          })()}
 
           <section style={{ marginTop: 16 }}>
             {data.points.length > 0 ? (
