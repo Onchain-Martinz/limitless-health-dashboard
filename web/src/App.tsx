@@ -7,9 +7,9 @@ type FeesPoint = {
 };
 
 type FeesResponse = {
-  ok: true;
+  ok: boolean;
   protocol: string;
-  source: "defillama";
+  source: string;
   points: FeesPoint[];
 };
 
@@ -44,7 +44,7 @@ export default function App() {
         <pre style={{ background: "#fee", padding: 12 }}>Error: {error}</pre>
       )}
 
-      {data && (
+      {data && data.ok && (
         <>
           <section>
             <p>
