@@ -13,6 +13,83 @@ type FeesResponse = {
   points: FeesPoint[];
 };
 
+type LineChartPoint = {
+  date: string;
+  dailyFees: number;
+};
+
+type LineChartProps = {
+  points: LineChartPoint[];
+  width: number;
+  height: number;
+};
+
+function LineChart({ points, width, height }: LineChartProps) {
+  const padding = 24;
+  const values = points.map((point) => point.dailyFees);
+  const minValue = Math.min(...values);
+  const maxValue = Math.max(...values);
+  const range = maxValue - minValue || 1;
+
+  const xScale = (index: number) => {
+    if (points.length <= 1) return padding;
+    const usableWidth = width - padding * 2;
+    return padding + (index / (points.length - 1)) * usableWidth;
+  };
+
+  const yScale = (value: number) => {
+    const usableHeight = height - padding * 2;
+    return height - padding - ((value - minValue) / range) * usableHeight;
+  };
+
+  const pathD = points
+    .map((point, index) => {
+      const x = xScale(index);
+      const y = yScale(point.dailyFees);
+      return `${index === 0 ? "M" : "L"} ${x} ${y}`;
+    })
+    .join(" ");
+
+  const firstDate = points[0]?.date ?? "";
+  const lastDate = points[points.length - 1]?.date ?? "";
+
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox={`0 0 ${width} ${height}`}
+      style={{ maxWidth: "100%", height: "auto", display: "block" }}
+      role="img"
+      aria-label="Daily fees line chart"
+    >
+      <rect
+        x={0}
+        y={0}
+        width={width}
+        height={height}
+        fill="#f6f8fa"
+        rx={8}
+      />
+      <path d={pathD} fill="none" stroke="#0b6efd" strokeWidth={2} />
+      <text x={padding} y={padding - 6} fill="#111" fontSize={12}>
+        {maxValue.toLocaleString()}
+      </text>
+      <text x={padding} y={height - 6} fill="#555" fontSize={12}>
+        {firstDate}
+      </text>
+      <text
+        x={width - padding}
+        y={height - 6}
+        fill="#555"
+        fontSize={12}
+        textAnchor="end"
+      >
+        {lastDate}
+      </text>
+    </svg>
+  );
+}
+
 export default function App() {
   const [data, setData] = useState<FeesResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -68,6 +145,18 @@ export default function App() {
                     .toLocaleString()
                 : "N/A"}
             </p>
+          </section>
+
+          <section style={{ marginTop: 16 }}>
+            {data.points.length > 0 ? (
+              <LineChart
+                points={data.points.slice(-90)}
+                width={900}
+                height={260}
+              />
+            ) : (
+              <p>No data available for chart.</p>
+            )}
           </section>
 
           <table
