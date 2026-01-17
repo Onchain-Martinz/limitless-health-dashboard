@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../../../../../../../Users/mac/limitless-health-dashboard/web/netlify/functions/hello.ts"],
-  "sourceRoot": "/private/var/folders/cj/tmwjk_nj3376hbmvjhj_6dwr0000gn/T/tmp-53092-bAOtYDBlTSzj",
+  "sourceRoot": "/private/var/folders/cj/tmwjk_nj3376hbmvjhj_6dwr0000gn/T/tmp-4422-6oBRJXrTXKaD",
   "sourcesContent": ["import type { Handler } from \"@netlify/functions\";\n\nexport const handler: Handler = async () => {\n  return {\n    statusCode: 200,\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify({\n      ok: true,\n      message: \"Hello from Netlify Functions\",\n      time: new Date().toISOString(),\n    }),\n  };\n};\n"],
   "mappings": ";;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAEO,IAAM,UAAmB,YAAY;AAC1C,SAAO;AAAA,IACL,YAAY;AAAA,IACZ,SAAS,EAAE,gBAAgB,mBAAmB;AAAA,IAC9C,MAAM,KAAK,UAAU;AAAA,MACnB,IAAI;AAAA,MACJ,SAAS;AAAA,MACT,OAAM,oBAAI,KAAK,GAAE,YAAY;AAAA,IAC/B,CAAC;AAAA,EACH;AACF;",
   "names": []
