@@ -17,7 +17,7 @@ const containerVariants = {
     y: 0,
     transition: {
       duration: 0.28,
-      ease: "easeOut",
+      ease: [0.22, 1, 0.36, 1],
       when: "beforeChildren",
       staggerChildren: 0.08,
     },
@@ -29,7 +29,7 @@ const itemVariants = {
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.24, ease: "easeOut" },
+    transition: { duration: 0.24, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
