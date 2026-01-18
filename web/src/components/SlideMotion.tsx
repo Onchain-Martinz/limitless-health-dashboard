@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import type { Easing } from "framer-motion";
 import type { ReactNode } from "react";
 
 type SlideContainerProps = {
@@ -10,6 +11,8 @@ type SlideItemProps = {
   className?: string;
 };
 
+const EASE_OUT: Easing = [0.22, 1, 0.36, 1];
+
 const containerVariants = {
   hidden: { opacity: 0, y: 8 },
   show: {
@@ -17,7 +20,7 @@ const containerVariants = {
     y: 0,
     transition: {
       duration: 0.28,
-      ease: [0.22, 1, 0.36, 1],
+      ease: EASE_OUT,
       when: "beforeChildren",
       staggerChildren: 0.08,
     },
@@ -29,7 +32,7 @@ const itemVariants = {
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.24, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.24, ease: EASE_OUT },
   },
 };
 

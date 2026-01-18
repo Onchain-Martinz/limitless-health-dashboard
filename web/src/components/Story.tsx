@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import type { MouseEvent, TouchEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import type { Easing } from "framer-motion";
 import IntroSlide from "./slides/IntroSlide";
 import StrategyOverviewSlide from "./slides/StrategyOverviewSlide";
 import ActivityBeforeAfterSlide from "./slides/ActivityBeforeAfterSlide";
@@ -44,8 +45,10 @@ type LeaderboardMetricsResponse = {
 
 type Slide = {
   key: string;
-  element: JSX.Element;
+  element: React.ReactElement;
 };
+
+const EASE_OUT: Easing = [0.22, 1, 0.36, 1];
 
 const LoadingSlide = () => (
   <SlideContainer>
@@ -226,7 +229,7 @@ export default function Story() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
+          transition={{ duration: 0.3, ease: EASE_OUT }}
         >
           {activeSlide.element}
         </motion.section>
