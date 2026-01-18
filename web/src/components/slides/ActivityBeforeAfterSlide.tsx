@@ -1,4 +1,5 @@
 import { fmtNumber } from "../../utils/format";
+import { SlideContainer, SlideItem } from "../SlideMotion";
 
 type FeesPoint = {
   date: string;
@@ -45,19 +46,25 @@ export default function ActivityBeforeAfterSlide({
   const showExtremeNote = preAvg < 50 && seasonAvg > 1000;
 
   return (
-    <div className="story-card">
-      <div className="story-kicker">Before vs After Season 1</div>
-      <h2 className="story-title">What changed after points went live?</h2>
-      <p className="story-subtitle">
-        Before Season 1, activity on Limitless was quiet. Trading fees were low,
-        and participation was limited.
-      </p>
-      <p className="story-subtitle">
-        Once the Season 1 points program launched, things changed quickly.
-        Trading activity picked up, and fees followed.
-      </p>
+    <SlideContainer>
+      <SlideItem className="story-kicker">Before vs After Season 1</SlideItem>
+      <SlideItem>
+        <h2 className="story-title">What changed after points went live?</h2>
+      </SlideItem>
+      <SlideItem>
+        <p className="story-subtitle">
+          Before Season 1, activity on Limitless was quiet. Trading fees were
+          low, and participation was limited.
+        </p>
+      </SlideItem>
+      <SlideItem>
+        <p className="story-subtitle">
+          Once the Season 1 points program launched, things changed quickly.
+          Trading activity picked up, and fees followed.
+        </p>
+      </SlideItem>
       {hasComparison ? (
-        <div className="story-grid">
+        <SlideItem className="story-grid">
           <div className="story-metric">
             <span className="story-label">Avg daily fees before Season 1</span>
             <span className="story-number">{formatUsd(preAvg)}</span>
@@ -70,22 +77,28 @@ export default function ActivityBeforeAfterSlide({
             <span className="story-label">Increase in activity</span>
             <span className="story-number">{fmtNumber(lift, "—")}%</span>
           </div>
-        </div>
+        </SlideItem>
       ) : (
-        <p className="story-footnote">
-          Insufficient historical data to compute comparison.
-        </p>
+        <SlideItem>
+          <p className="story-footnote">
+            Insufficient historical data to compute comparison.
+          </p>
+        </SlideItem>
       )}
       {showExtremeNote && (
-        <p className="story-footnote">
-          Yes — that jump looks extreme. It surprised us too. But this is what
-          the public data shows.
-        </p>
+        <SlideItem>
+          <p className="story-footnote">
+            Yes — that jump looks extreme. It surprised us too. But this is what
+            the public data shows.
+          </p>
+        </SlideItem>
       )}
-      <p className="story-footnote">
-        Fees are used here as a proxy for user activity, since historical DAU
-        data is not publicly available.
-      </p>
-    </div>
+      <SlideItem>
+        <p className="story-footnote">
+          Fees are used here as a proxy for user activity, since historical DAU
+          data is not publicly available.
+        </p>
+      </SlideItem>
+    </SlideContainer>
   );
 }

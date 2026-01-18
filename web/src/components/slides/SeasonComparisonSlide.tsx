@@ -1,4 +1,5 @@
 import { fmtNumber } from "../../utils/format";
+import { SlideContainer, SlideItem } from "../SlideMotion";
 
 type FeesPoint = {
   date: string;
@@ -60,16 +61,22 @@ export default function SeasonComparisonSlide({
     season1Total > 0 ? ((season2Total - season1Total) / season1Total) * 100 : 0;
 
   return (
-    <div className="story-card">
-      <div className="story-kicker">Season 1 vs Season 2</div>
-      <h2 className="story-title">The system got stronger over time</h2>
-      <p className="story-subtitle">Comparing both seasons shows a clear trend.</p>
-      <p className="story-subtitle">
-        Season 2 generated significantly more fees than Season 1, despite similar
-        incentive mechanics.
-      </p>
+    <SlideContainer>
+      <SlideItem className="story-kicker">Season 1 vs Season 2</SlideItem>
+      <SlideItem>
+        <h2 className="story-title">The system got stronger over time</h2>
+      </SlideItem>
+      <SlideItem>
+        <p className="story-subtitle">Comparing both seasons shows a clear trend.</p>
+      </SlideItem>
+      <SlideItem>
+        <p className="story-subtitle">
+          Season 2 generated significantly more fees than Season 1, despite
+          similar incentive mechanics.
+        </p>
+      </SlideItem>
       {season1Fees.length > 0 && season2Fees.length > 0 ? (
-        <div className="story-grid">
+        <SlideItem className="story-grid">
           <div className="story-metric">
             <span className="story-label">Season 1 total fees</span>
             <span className="story-number">{formatUsd(season1Total)}</span>
@@ -82,13 +89,17 @@ export default function SeasonComparisonSlide({
             <span className="story-label">Increase</span>
             <span className="story-number">{fmtNumber(growth, "—")}%</span>
           </div>
-        </div>
+        </SlideItem>
       ) : (
-        <p className="story-footnote">Data unavailable.</p>
+        <SlideItem>
+          <p className="story-footnote">Data unavailable.</p>
+        </SlideItem>
       )}
-      <p className="story-footnote">
-        Season 2 totals are calculated over observed leaderboard periods.
-      </p>
-    </div>
+      <SlideItem>
+        <p className="story-footnote">
+          Season 2 totals are calculated over observed leaderboard periods.
+        </p>
+      </SlideItem>
+    </SlideContainer>
   );
 }

@@ -1,4 +1,5 @@
 import { fmtNumber } from "../../utils/format";
+import { SlideContainer, SlideItem } from "../SlideMotion";
 
 type LeaderboardPoint = {
   id: string;
@@ -39,7 +40,9 @@ function BarChart({ points }: { points: ChartPoint[] }) {
               style={{ width: `${(point.value / maxValue) * 100}%` }}
             />
           </div>
-          <span className="story-bar-value">{fmtNumber(point.value, "—")} pts</span>
+          <span className="story-bar-value">
+            {fmtNumber(point.value, "—")} pts
+          </span>
         </div>
       ))}
     </div>
@@ -55,22 +58,34 @@ export default function Season2ActivationSlide({
   const series = buildSeries(pointsToShow);
 
   return (
-    <div className="story-card">
-      <div className="story-kicker">Season 2 Launch</div>
-      <h2 className="story-title">Season 2 brought users back</h2>
-      <p className="story-subtitle">When Season 2 launched, activity spiked again.</p>
-      <p className="story-subtitle">
-        Weekly leaderboard data shows increased points accumulation, suggesting
-        that returning users — and new users — participated in the next season.
-      </p>
-      <p className="story-subtitle">
-        This wasn’t just leftover momentum. It was reactivation.
-      </p>
+    <SlideContainer>
+      <SlideItem className="story-kicker">Season 2 Launch</SlideItem>
+      <SlideItem>
+        <h2 className="story-title">Season 2 brought users back</h2>
+      </SlideItem>
+      <SlideItem>
+        <p className="story-subtitle">When Season 2 launched, activity spiked again.</p>
+      </SlideItem>
+      <SlideItem>
+        <p className="story-subtitle">
+          Weekly leaderboard data shows increased points accumulation, suggesting
+          that returning users — and new users — participated in the next season.
+        </p>
+      </SlideItem>
+      <SlideItem>
+        <p className="story-subtitle">
+          This wasn’t just leftover momentum. It was reactivation.
+        </p>
+      </SlideItem>
       {series.length > 0 ? (
-        <BarChart points={series} />
+        <SlideItem>
+          <BarChart points={series} />
+        </SlideItem>
       ) : (
-        <p className="story-footnote">Data unavailable.</p>
+        <SlideItem>
+          <p className="story-footnote">Data unavailable.</p>
+        </SlideItem>
       )}
-    </div>
+    </SlideContainer>
   );
 }

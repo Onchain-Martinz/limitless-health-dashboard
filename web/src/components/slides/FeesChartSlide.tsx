@@ -1,4 +1,5 @@
 import { fmtNumber } from "../../utils/format";
+import { SlideContainer, SlideItem } from "../SlideMotion";
 
 type FeesPoint = {
   date: string;
@@ -108,26 +109,38 @@ export default function FeesChartSlide({ points }: { points: FeesPoint[] }) {
   const chartPoints = points;
 
   return (
-    <div className="story-card">
-      <div className="story-kicker">Revenue During Season 1</div>
-      <h2 className="story-title">
-        Season 1 didn’t just drive engagement — it drove revenue
-      </h2>
-      <p className="story-subtitle">
-        Throughout Season 1, users didn’t just chase points. They traded.
-      </p>
-      <p className="story-subtitle">
-        Daily and weekly fee data shows steady revenue generation, with clear
-        spikes around high-activity periods.
-      </p>
+    <SlideContainer>
+      <SlideItem className="story-kicker">Revenue During Season 1</SlideItem>
+      <SlideItem>
+        <h2 className="story-title">
+          Season 1 didn’t just drive engagement — it drove revenue
+        </h2>
+      </SlideItem>
+      <SlideItem>
+        <p className="story-subtitle">
+          Throughout Season 1, users didn’t just chase points. They traded.
+        </p>
+      </SlideItem>
+      <SlideItem>
+        <p className="story-subtitle">
+          Daily and weekly fee data shows steady revenue generation, with clear
+          spikes around high-activity periods.
+        </p>
+      </SlideItem>
       {chartPoints.length > 0 ? (
-        <LineChart points={chartPoints} width={900} height={420} />
+        <SlideItem>
+          <LineChart points={chartPoints} width={900} height={420} />
+        </SlideItem>
       ) : (
-        <p className="story-footnote">Data unavailable.</p>
+        <SlideItem>
+          <p className="story-footnote">Data unavailable.</p>
+        </SlideItem>
       )}
-      <p className="story-footnote">
-        This chart reflects protocol fees generated from trading activity.
-      </p>
-    </div>
+      <SlideItem>
+        <p className="story-footnote">
+          This chart reflects protocol fees generated from trading activity.
+        </p>
+      </SlideItem>
+    </SlideContainer>
   );
 }

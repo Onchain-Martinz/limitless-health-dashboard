@@ -1,14 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { MouseEvent, TouchEvent } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import IntroSlide from "./slides/IntroSlide";
 import StrategyOverviewSlide from "./slides/StrategyOverviewSlide";
-import FeesChartSlide from "./slides/FeesChartSlide";
 import ActivityBeforeAfterSlide from "./slides/ActivityBeforeAfterSlide";
+import FeesChartSlide from "./slides/FeesChartSlide";
 import PostAirdropSlide from "./slides/PostAirdropSlide";
 import Season2ActivationSlide from "./slides/Season2ActivationSlide";
 import TopWalletsSlide from "./slides/TopWalletsSlide";
 import SeasonComparisonSlide from "./slides/SeasonComparisonSlide";
 import TakeawaysSlide from "./slides/TakeawaysSlide";
+import AttributionSlide from "./slides/AttributionSlide";
+import { SlideContainer, SlideItem } from "./SlideMotion";
 
 type FeesPoint = {
   date: string;
@@ -45,11 +48,15 @@ type Slide = {
 };
 
 const LoadingSlide = () => (
-  <div className="story-card">
-    <div className="story-kicker">Loading</div>
-    <h1 className="story-title">Preparing the report...</h1>
-    <p className="story-subtitle">Fetching verified data sources.</p>
-  </div>
+  <SlideContainer>
+    <SlideItem className="story-kicker">Loading</SlideItem>
+    <SlideItem>
+      <h1 className="story-title">Preparing the report...</h1>
+    </SlideItem>
+    <SlideItem>
+      <p className="story-subtitle">Fetching verified data sources.</p>
+    </SlideItem>
+  </SlideContainer>
 );
 
 export default function Story() {
@@ -90,6 +97,7 @@ export default function Story() {
       if (leaderboardResult.status === "fulfilled" && leaderboardResult.value.ok) {
         setLeaderboardData(leaderboardResult.value);
       }
+
       setLoading(false);
     };
 
@@ -105,62 +113,32 @@ export default function Story() {
       return [{ key: "loading", element: <LoadingSlide /> }];
     }
 
-    const nextSlides: Slide[] = [
+    return [
+      { key: "intro", element: <IntroSlide /> },
+      { key: "strategy-overview", element: <StrategyOverviewSlide /> },
       {
-        key: "intro",
-        element: <IntroSlide />,
+        key: "activity-before-after",
+        element: <ActivityBeforeAfterSlide points={feesData?.points ?? []} />,
       },
+      { key: "fees-chart", element: <FeesChartSlide points={feesData?.points ?? []} /> },
+      { key: "post-airdrop", element: <PostAirdropSlide /> },
+      {
+        key: "season2-activation",
+        element: <Season2ActivationSlide season2Points={leaderboardData?.season2.points ?? []} />,
+      },
+      { key: "top-wallets", element: <TopWalletsSlide /> },
+      {
+        key: "season-comparison",
+        element: (
+          <SeasonComparisonSlide
+            feesPoints={feesData?.points ?? []}
+            season2Points={leaderboardData?.season2.points ?? []}
+          />
+        ),
+      },
+      { key: "takeaways", element: <TakeawaysSlide /> },
+      { key: "attribution", element: <AttributionSlide /> },
     ];
-
-    nextSlides.push({
-      key: "strategy-overview",
-      element: <StrategyOverviewSlide />,
-    });
-
-    nextSlides.push({
-      key: "activity-before-after",
-      element: (
-        <ActivityBeforeAfterSlide points={feesData?.points ?? []} />
-      ),
-    });
-    nextSlides.push({
-      key: "fees-chart",
-      element: <FeesChartSlide points={feesData?.points ?? []} />,
-    });
-    nextSlides.push({
-      key: "post-airdrop",
-      element: <PostAirdropSlide />,
-    });
-    nextSlides.push({
-      key: "season2-activation",
-      element: (
-        <Season2ActivationSlide
-          season2Points={leaderboardData?.season2.points ?? []}
-        />
-      ),
-    });
-
-    nextSlides.push({
-      key: "top-wallets",
-      element: <TopWalletsSlide />,
-    });
-
-    nextSlides.push({
-      key: "season-comparison",
-      element: (
-        <SeasonComparisonSlide
-          feesPoints={feesData?.points ?? []}
-          season2Points={leaderboardData?.season2.points ?? []}
-        />
-      ),
-    });
-
-    nextSlides.push({
-      key: "takeaways",
-      element: <TakeawaysSlide />,
-    });
-
-    return nextSlides;
   }, [loading, feesData, leaderboardData]);
 
   useEffect(() => {
@@ -223,6 +201,8 @@ export default function Story() {
     }
   };
 
+  const activeSlide = slides[index];
+
   return (
     <div
       className="story-root"
@@ -239,16 +219,18 @@ export default function Story() {
         ))}
       </div>
 
-      <div
-        className="story-track"
-        style={{ transform: `translateX(-${index * 100}%)` }}
-      >
-        {slides.map((slide) => (
-          <section key={slide.key} className="story-slide">
-            {slide.element}
-          </section>
-        ))}
-      </div>
+      <AnimatePresence mode="wait">
+        <motion.section
+          key={activeSlide.key}
+          className="story-slide"
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+        >
+          {activeSlide.element}
+        </motion.section>
+      </AnimatePresence>
 
       <div className="story-footer" data-no-advance>
         <button

@@ -1,4 +1,5 @@
 import { fmtNumber } from "../../utils/format";
+import { SlideContainer, SlideItem } from "../SlideMotion";
 
 type WalletEntry = {
   address: string;
@@ -27,19 +28,27 @@ export default function TopWalletsSlide() {
   const sorted = [...wallets].sort((a, b) => b.volumeUsd - a.volumeUsd);
 
   return (
-    <div className="story-card">
-      <div className="story-kicker">Who Drove the Activity?</div>
-      <h2 className="story-title">A small group did most of the work</h2>
-      <p className="story-subtitle">Season 2 data reveals a familiar pattern.</p>
-      <p className="story-subtitle">
-        A relatively small group of wallets accounted for a large share of points
-        accumulation and trading volume.
-      </p>
-      <p className="story-subtitle">
-        While profitability data isn’t public, this competitive dynamic tells us
-        one thing clearly: leaderboards created real competition.
-      </p>
-      <div className="story-list">
+    <SlideContainer>
+      <SlideItem className="story-kicker">Who Drove the Activity?</SlideItem>
+      <SlideItem>
+        <h2 className="story-title">A small group did most of the work</h2>
+      </SlideItem>
+      <SlideItem>
+        <p className="story-subtitle">Season 2 data reveals a familiar pattern.</p>
+      </SlideItem>
+      <SlideItem>
+        <p className="story-subtitle">
+          A relatively small group of wallets accounted for a large share of
+          points accumulation and trading volume.
+        </p>
+      </SlideItem>
+      <SlideItem>
+        <p className="story-subtitle">
+          While profitability data isn’t public, this competitive dynamic tells
+          us one thing clearly: leaderboards created real competition.
+        </p>
+      </SlideItem>
+      <SlideItem className="story-list">
         {sorted.map((wallet, index) => (
           <div key={wallet.address} className="story-row">
             <span>
@@ -48,10 +57,12 @@ export default function TopWalletsSlide() {
             <strong>{formatUsd(wallet.volumeUsd)}</strong>
           </div>
         ))}
-      </div>
-      <p className="story-footnote">
-        Ranked by observed volume and points, not profitability.
-      </p>
-    </div>
+      </SlideItem>
+      <SlideItem>
+        <p className="story-footnote">
+          Ranked by observed volume and points, not profitability.
+        </p>
+      </SlideItem>
+    </SlideContainer>
   );
 }
