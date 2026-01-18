@@ -177,6 +177,13 @@ body {
   margin-top: 20px;
 }
 
+.story-chart-label {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8c93a8;
+}
+
 .story-bar-row {
   display: grid;
   grid-template-columns: 90px 1fr auto;

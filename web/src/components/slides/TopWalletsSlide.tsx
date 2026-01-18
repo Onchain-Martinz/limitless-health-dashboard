@@ -1,164 +1,56 @@
-import { useEffect, useState } from "react";
 import { fmtNumber } from "../../utils/format";
 
-type LeaderboardRow = {
-  account?: string;
-  displayName?: string;
-  user?: { account?: string; displayName?: string };
-  totalVolume?: number | string;
-  volume?: number | string;
-  points?: number | string;
-  totalPoints?: number | string;
-};
-
-type LeaderboardPayload = {
-  data?: LeaderboardRow[];
-};
-
 type WalletEntry = {
-  rank: number;
-  label: string;
-  value: number;
-  account: string;
+  address: string;
+  volumeUsd: number;
 };
 
-type LeaderboardMetricsResponse = {
-  season2?: { volume?: unknown[] };
-};
+const wallets: WalletEntry[] = [
+  { address: "0x2eeF6a6baC8254454485D6F8917478eF7653c38B", volumeUsd: 3145782 },
+  { address: "0x333Afd65D93A95eE6e66415C07785B2E341Bff2d", volumeUsd: 3105885 },
+  { address: "0xEbb8612C859e2C468aB3A0c60C59692eC7B51FB0", volumeUsd: 1941059 },
+  { address: "0x0D839361F53859572642266C2a90584c083213F4", volumeUsd: 1779613 },
+  { address: "0xAbd929adC7199a9233af6787445e9e5a47FF0c15", volumeUsd: 1006048 },
+];
 
 const shortenAddress = (address: string) => {
   if (!address) return "Unknown";
-  if (address.length <= 10) return address;
-  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  return `${address.slice(0, 6)}…${address.slice(-4)}`;
 };
 
-const toNumber = (value: unknown) => {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : 0;
+const formatUsd = (value: number) => {
+  const formatted = fmtNumber(value, "—");
+  return formatted === "—" ? formatted : `$${formatted}`;
 };
 
-const formatValue = (value: number, metric: "volume" | "points") => {
-  const rounded = Math.round(value * 100) / 100;
-  const formatted = fmtNumber(rounded, "0");
-  return metric === "volume" ? `$${formatted} USDC` : `${formatted} pts`;
-};
-
-const fetchLeaderboard = async (metric: "volume" | "points") => {
-  const url = `https://api.limitless.exchange/leaderboard/week?metric=${metric}&page=1&limit=10&season=SEASON2`;
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`${res.status} ${res.statusText}`);
-  }
-  return (await res.json()) as LeaderboardPayload;
-};
-
-export default function TopWalletsSlide({
-  leaderboardData,
-}: {
-  leaderboardData: LeaderboardMetricsResponse | null;
-}) {
-  const [wallets, setWallets] = useState<WalletEntry[]>([]);
-  const [metric, setMetric] = useState<"volume" | "points">("volume");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let active = true;
-
-    const run = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        if (leaderboardData?.season2?.volume && leaderboardData.season2.volume.length > 0) {
-          setMetric("volume");
-        }
-
-        let payload = await fetchLeaderboard("volume");
-        let chosenMetric: "volume" | "points" = "volume";
-
-        if (!Array.isArray(payload.data) || payload.data.length === 0) {
-          payload = await fetchLeaderboard("points");
-          chosenMetric = "points";
-        }
-
-        const rows = Array.isArray(payload.data) ? payload.data : [];
-        const entries = rows
-          .map((row, index) => {
-            const account = row.account ?? row.user?.account ?? "";
-            if (!account) return null;
-            const displayName = row.displayName ?? row.user?.displayName ?? "";
-            const label = displayName || shortenAddress(account);
-            const value =
-              chosenMetric === "volume"
-                ? toNumber(row.totalVolume ?? row.volume ?? row.points)
-                : toNumber(row.totalPoints ?? row.points);
-
-            return {
-              rank: index + 1,
-              label,
-              value,
-              account,
-            } as WalletEntry;
-          })
-          .filter((entry): entry is WalletEntry => Boolean(entry));
-
-        if (!active) return;
-
-        setWallets(entries);
-        setMetric(chosenMetric);
-      } catch (err) {
-        if (!active) return;
-        setError(err instanceof Error ? err.message : "Failed to load wallets");
-      } finally {
-        if (active) setLoading(false);
-      }
-    };
-
-    run();
-
-    return () => {
-      active = false;
-    };
-  }, [leaderboardData]);
+export default function TopWalletsSlide() {
+  const sorted = [...wallets].sort((a, b) => b.volumeUsd - a.volumeUsd);
 
   return (
     <div className="story-card">
-      <div className="story-kicker">User Behavior & Competition</div>
-      <h2 className="story-title">Who Drove the Activity?</h2>
+      <div className="story-kicker">Who Drove the Activity?</div>
+      <h2 className="story-title">A small group did most of the work</h2>
+      <p className="story-subtitle">Season 2 data reveals a familiar pattern.</p>
       <p className="story-subtitle">
-        Leaderboard data from Season 2 highlights a cohort of highly engaged
-        wallets responsible for a disproportionate share of points and trading
-        volume.
+        A relatively small group of wallets accounted for a large share of points
+        accumulation and trading volume.
       </p>
       <p className="story-subtitle">
-        While profitability data is not publicly available, ranking by volume
-        and points reveals strong competitive dynamics among active participants.
+        While profitability data isn’t public, this competitive dynamic tells us
+        one thing clearly: leaderboards created real competition.
       </p>
-
-      {loading && <p className="story-subtitle">Loading leaderboard…</p>}
-      {error && <p className="story-subtitle">Unable to load wallets: {error}</p>}
-
-      {!loading && !error && wallets.length > 0 && (
-        <div className="story-list">
-          {wallets.map((wallet) => (
-            <div key={wallet.account} className="story-row">
-              <span>
-                #{wallet.rank} {wallet.label}
-              </span>
-              <strong>{formatValue(wallet.value, metric)}</strong>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {!loading && !error && wallets.length === 0 && (
-        <p className="story-subtitle">Leaderboard data is currently empty.</p>
-      )}
-
+      <div className="story-list">
+        {sorted.map((wallet, index) => (
+          <div key={wallet.address} className="story-row">
+            <span>
+              {index + 1}. {shortenAddress(wallet.address)}
+            </span>
+            <strong>{formatUsd(wallet.volumeUsd)}</strong>
+          </div>
+        ))}
+      </div>
       <p className="story-footnote">
-        Top wallets are based on available API data (volume/points), not
-        profitability.
+        Ranked by observed volume and points, not profitability.
       </p>
     </div>
   );

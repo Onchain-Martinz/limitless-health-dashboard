@@ -23,22 +23,6 @@ type FeesResponse = {
   points: FeesPoint[];
 };
 
-type UserMetricsPoint = {
-  date: string;
-  dailyActiveUsers: number;
-  newUsers: number;
-  cohortSize: number;
-  retained7d: number;
-  retention7dRate: number;
-};
-
-type UserMetricsResponse = {
-  ok: boolean;
-  source: string;
-  requestedDays: number;
-  series: UserMetricsPoint[];
-};
-
 type LeaderboardPoint = {
   id: string;
   startIso: string;
@@ -63,29 +47,14 @@ type Slide = {
 const LoadingSlide = () => (
   <div className="story-card">
     <div className="story-kicker">Loading</div>
-    <h1 className="story-title">Building your Limitless Wrapped...</h1>
-    <p className="story-subtitle">Fetching fees, users, and leaderboard data.</p>
-  </div>
-);
-
-const ErrorSlide = ({ messages }: { messages: string[] }) => (
-  <div className="story-card story-card--warning">
-    <div className="story-kicker">Partial data</div>
-    <h1 className="story-title">Some endpoints failed</h1>
-    <ul className="story-list">
-      {messages.map((message) => (
-        <li key={message}>{message}</li>
-      ))}
-    </ul>
-    <p className="story-footnote">We will still show the slides we can.</p>
+    <h1 className="story-title">Preparing the report...</h1>
+    <p className="story-subtitle">Fetching verified data sources.</p>
   </div>
 );
 
 export default function Story() {
   const [feesData, setFeesData] = useState<FeesResponse | null>(null);
-  const [userMetricsData, setUserMetricsData] = useState<UserMetricsResponse | null>(null);
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardMetricsResponse | null>(null);
-  const [errors, setErrors] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [index, setIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
@@ -104,7 +73,6 @@ export default function Story() {
     const run = async () => {
       const results = await Promise.allSettled([
         fetchJson<FeesResponse>("/.netlify/functions/fees", "Fees"),
-        fetchJson<UserMetricsResponse>("/.netlify/functions/user-metrics?days=14", "User metrics"),
         fetchJson<LeaderboardMetricsResponse>(
           "/.netlify/functions/leaderboard-metrics?weeks=12",
           "Leaderboard"
@@ -113,30 +81,15 @@ export default function Story() {
 
       if (!isMounted) return;
 
-      const nextErrors: string[] = [];
-
       const feesResult = results[0];
       if (feesResult.status === "fulfilled" && feesResult.value.ok) {
         setFeesData(feesResult.value);
-      } else {
-        nextErrors.push("Fees data unavailable.");
       }
 
-      const userResult = results[1];
-      if (userResult.status === "fulfilled" && userResult.value.ok) {
-        setUserMetricsData(userResult.value);
-      } else {
-        nextErrors.push("User metrics unavailable.");
-      }
-
-      const leaderboardResult = results[2];
+      const leaderboardResult = results[1];
       if (leaderboardResult.status === "fulfilled" && leaderboardResult.value.ok) {
         setLeaderboardData(leaderboardResult.value);
-      } else {
-        nextErrors.push("Leaderboard data unavailable.");
       }
-
-      setErrors(nextErrors);
       setLoading(false);
     };
 
@@ -147,20 +100,6 @@ export default function Story() {
     };
   }, []);
 
-  const dateRange = useMemo(() => {
-    if (feesData?.points?.length) {
-      const first = feesData.points[0]?.date;
-      const last = feesData.points[feesData.points.length - 1]?.date;
-      if (first && last) return `${first} to ${last}`;
-    }
-    if (userMetricsData?.series?.length) {
-      const first = userMetricsData.series[0]?.date;
-      const last = userMetricsData.series[userMetricsData.series.length - 1]?.date;
-      if (first && last) return `${first} to ${last}`;
-    }
-    return undefined;
-  }, [feesData, userMetricsData]);
-
   const slides = useMemo<Slide[]>(() => {
     if (loading) {
       return [{ key: "loading", element: <LoadingSlide /> }];
@@ -169,16 +108,9 @@ export default function Story() {
     const nextSlides: Slide[] = [
       {
         key: "intro",
-        element: <IntroSlide dateRange={dateRange} />,
+        element: <IntroSlide />,
       },
     ];
-
-    if (errors.length > 0) {
-      nextSlides.push({
-        key: "errors",
-        element: <ErrorSlide messages={errors} />,
-      });
-    }
 
     nextSlides.push({
       key: "strategy-overview",
@@ -188,10 +120,7 @@ export default function Story() {
     nextSlides.push({
       key: "activity-before-after",
       element: (
-        <ActivityBeforeAfterSlide
-          points={feesData?.points ?? []}
-          userMetrics={userMetricsData?.series ?? []}
-        />
+        <ActivityBeforeAfterSlide points={feesData?.points ?? []} />
       ),
     });
     nextSlides.push({
@@ -200,7 +129,7 @@ export default function Story() {
     });
     nextSlides.push({
       key: "post-airdrop",
-      element: <PostAirdropSlide points={feesData?.points ?? []} />,
+      element: <PostAirdropSlide />,
     });
     nextSlides.push({
       key: "season2-activation",
@@ -213,7 +142,7 @@ export default function Story() {
 
     nextSlides.push({
       key: "top-wallets",
-      element: <TopWalletsSlide leaderboardData={leaderboardData} />,
+      element: <TopWalletsSlide />,
     });
 
     nextSlides.push({
@@ -232,7 +161,7 @@ export default function Story() {
     });
 
     return nextSlides;
-  }, [loading, errors, feesData, userMetricsData, leaderboardData, dateRange]);
+  }, [loading, feesData, leaderboardData]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {

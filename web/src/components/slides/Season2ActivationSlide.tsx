@@ -29,6 +29,7 @@ function BarChart({ points }: { points: ChartPoint[] }) {
 
   return (
     <div className="story-bar-chart">
+      <div className="story-chart-label">Weekly points (Season 2)</div>
       {points.map((point) => (
         <div key={point.label} className="story-bar-row">
           <span className="story-bar-label">{point.label}</span>
@@ -38,7 +39,7 @@ function BarChart({ points }: { points: ChartPoint[] }) {
               style={{ width: `${(point.value / maxValue) * 100}%` }}
             />
           </div>
-          <span className="story-bar-value">{fmtNumber(point.value)} pts</span>
+          <span className="story-bar-value">{fmtNumber(point.value, "—")} pts</span>
         </div>
       ))}
     </div>
@@ -55,16 +56,15 @@ export default function Season2ActivationSlide({
 
   return (
     <div className="story-card">
-      <div className="story-kicker">Season 2 Activation</div>
-      <h2 className="story-title">Renewed Engagement with Season 2</h2>
+      <div className="story-kicker">Season 2 Launch</div>
+      <h2 className="story-title">Season 2 brought users back</h2>
+      <p className="story-subtitle">When Season 2 launched, activity spiked again.</p>
       <p className="story-subtitle">
-        The launch of Season 2 coincided with a clear spike in points accumulation
-        and trading activity.
+        Weekly leaderboard data shows increased points accumulation, suggesting
+        that returning users — and new users — participated in the next season.
       </p>
       <p className="story-subtitle">
-        Weekly leaderboard data shows increased participation intensity,
-        indicating that seasonal incentives successfully reactivated demand on the
-        platform.
+        This wasn’t just leftover momentum. It was reactivation.
       </p>
       {series.length > 0 ? (
         <BarChart points={series} />

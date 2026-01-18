@@ -1,25 +1,25 @@
 export default function TakeawaysSlide() {
   return (
     <div className="story-card">
-      <div className="story-kicker">Marketing Takeaways</div>
-      <h2 className="story-title">What This Teaches Us About Incentives</h2>
+      <div className="story-kicker">The Takeaway</div>
+      <h2 className="story-title">What this teaches us about incentives</h2>
       <p className="story-subtitle">
-        The Limitless case study demonstrates that points-based incentive systems
-        can be effective growth engines when:
+        The Limitless experiment shows that points systems can work — if designed
+        properly.
       </p>
+      <p className="story-subtitle">They work best when:</p>
       <ul className="story-list story-list--bullets">
-        <li>Rewards are directly tied to core revenue actions.</li>
-        <li>Incentives are structured seasonally to reset motivation.</li>
-        <li>Leaderboards introduce social competition.</li>
+        <li>Rewards are tied directly to real economic actions.</li>
+        <li>Incentives reset in seasons to renew motivation.</li>
+        <li>Competition is visible through leaderboards.</li>
       </ul>
       <p className="story-subtitle">
-        While incentives alone do not guarantee long-term retention, well-designed
-        point systems can drive real economic activity rather than vanity metrics.
+        Points alone don’t guarantee long-term retention. But when done right,
+        they can drive real usage — not just hype.
       </p>
       <p className="story-footnote">
-        User metrics are derived from publicly observable activity and
-        leaderboard data. This analysis does not include internal user analytics
-        or realized profit data.
+        This analysis is based on publicly observable data and does not include
+        internal user or profit metrics.
       </p>
     </div>
   );

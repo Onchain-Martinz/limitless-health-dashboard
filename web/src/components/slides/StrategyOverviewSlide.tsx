@@ -1,17 +1,17 @@
 export default function StrategyOverviewSlide() {
   return (
     <div className="story-card">
-      <div className="story-kicker">Strategy Overview</div>
-      <h2 className="story-title">Points as a Growth Lever</h2>
+      <div className="story-kicker">The Idea</div>
+      <h2 className="story-title">Points as a growth experiment</h2>
       <p className="story-subtitle">
-        Limitless Exchange became publicly active in late 2025 and adopted a
-        seasonal points-based incentive system as a core growth strategy.
+        Limitless launched in late 2025 and chose a simple growth strategy:
+        reward users with points for trading.
       </p>
       <p className="story-subtitle">
-        Users earned points by trading on the platform, with rewards
-        distributed at the end of each season. This analysis evaluates whether
-        the points system translated into measurable growth and economic output.
+        These points were distributed in seasons, with the promise of future
+        rewards.
       </p>
+      <p className="story-subtitle">The question is simple: did this actually work?</p>
     </div>
   );
 }
