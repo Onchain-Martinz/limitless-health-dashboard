@@ -248,6 +248,28 @@ body {
   z-index: 2;
 }
 
+.story-tap-zones {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  pointer-events: none;
+}
+
+.story-tap-zone {
+  height: 100%;
+}
+
+@media (hover: hover) {
+  .story-root:hover .story-tap-zone.left {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.04), transparent);
+  }
+
+  .story-root:hover .story-tap-zone.right {
+    background: linear-gradient(270deg, rgba(255, 255, 255, 0.04), transparent);
+  }
+}
+
 .story-dot {
   width: 10px;
   height: 10px;

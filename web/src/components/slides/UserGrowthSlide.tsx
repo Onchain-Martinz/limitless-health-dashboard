@@ -1,4 +1,5 @@
 import { fmtNumber } from "../../utils/format";
+import { SlideContainer, SlideItem } from "../SlideMotion";
 
 type UserMetricsPoint = {
   date: string;
@@ -29,13 +30,17 @@ export default function UserGrowthSlide({
 
   if (safeSeries.length === 0) {
     return (
-      <div className="story-card">
-        <div className="story-kicker">User Growth</div>
-        <h2 className="story-title">No user data available</h2>
-        <p className="story-subtitle">
-          The user metrics endpoint is returning empty or failing right now.
-        </p>
-      </div>
+      <SlideContainer>
+        <SlideItem className="story-kicker">User Growth</SlideItem>
+        <SlideItem>
+          <h2 className="story-title">No user data available</h2>
+        </SlideItem>
+        <SlideItem>
+          <p className="story-subtitle">
+            The user metrics endpoint is returning empty or failing right now.
+          </p>
+        </SlideItem>
+      </SlideContainer>
     );
   }
 
@@ -49,11 +54,13 @@ export default function UserGrowthSlide({
   const latestNewUsers = toSafeNumber(latest?.newUsers);
 
   return (
-    <div className="story-card">
-      <div className="story-kicker">User Growth</div>
-      <h2 className="story-title">Momentum in the last {safeSeries.length} days</h2>
+    <SlideContainer>
+      <SlideItem className="story-kicker">User Growth</SlideItem>
+      <SlideItem>
+        <h2 className="story-title">Momentum in the last {safeSeries.length} days</h2>
+      </SlideItem>
 
-      <div className="story-grid">
+      <SlideItem className="story-grid">
         <div className="story-metric">
           <span className="story-label">Latest daily active users</span>
           <span className="story-number">
@@ -70,13 +77,15 @@ export default function UserGrowthSlide({
           <span className="story-label">New users (last 7 days)</span>
           <span className="story-number">{fmtNumber(last7New)}</span>
         </div>
-      </div>
+      </SlideItem>
 
       {safeSeries.length < 7 && (
-        <p className="story-footnote">
-          Only {safeSeries.length} day(s) available so far.
-        </p>
+        <SlideItem>
+          <p className="story-footnote">
+            Only {safeSeries.length} day(s) available so far.
+          </p>
+        </SlideItem>
       )}
-    </div>
+    </SlideContainer>
   );
 }

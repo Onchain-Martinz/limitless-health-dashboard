@@ -1,4 +1,5 @@
 import { fmtNumber } from "../../utils/format";
+import { SlideContainer, SlideItem } from "../SlideMotion";
 
 type LeaderboardPoint = {
   id: string;
@@ -26,11 +27,13 @@ export default function LeaderboardPointsSlide({
   const pointsToShow = season2Points.slice(-6);
 
   return (
-    <div className="story-card">
-      <div className="story-kicker">Season 2 Leaderboard</div>
-      <h2 className="story-title">Weekly points pace</h2>
+    <SlideContainer>
+      <SlideItem className="story-kicker">Season 2 Leaderboard</SlideItem>
+      <SlideItem>
+        <h2 className="story-title">Weekly points pace</h2>
+      </SlideItem>
       {pointsToShow.length > 0 ? (
-        <div className="story-list">
+        <SlideItem className="story-list">
           {pointsToShow.map((point) => (
             <div key={point.id} className="story-row">
               <span>
@@ -39,11 +42,17 @@ export default function LeaderboardPointsSlide({
               <strong>{fmtNumber(point.points)} pts</strong>
             </div>
           ))}
-        </div>
+        </SlideItem>
       ) : (
-        <p className="story-subtitle">Season 2 points data is not available.</p>
+        <SlideItem>
+          <p className="story-subtitle">Season 2 points data is not available.</p>
+        </SlideItem>
       )}
-      {notes.length > 0 && <p className="story-footnote">{notes[0]}</p>}
-    </div>
+      {notes.length > 0 && (
+        <SlideItem>
+          <p className="story-footnote">{notes[0]}</p>
+        </SlideItem>
+      )}
+    </SlideContainer>
   );
 }

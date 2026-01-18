@@ -1,4 +1,5 @@
 import { fmtNumber } from "../../utils/format";
+import { SlideContainer, SlideItem } from "../SlideMotion";
 
 type FeesPoint = {
   date: string;
@@ -22,19 +23,25 @@ export default function Season1ImpactSlide({ points }: { points: FeesPoint[] }) 
   const avgFees = season1Points.length > 0 ? totalFees / season1Points.length : 0;
 
   return (
-    <div className="story-card">
-      <div className="story-kicker">Season 1 Economic Impact</div>
-      <h2 className="story-title">Revenue Generated During Season 1</h2>
-      <p className="story-subtitle">
-        Throughout Season 1, Limitless generated consistent protocol revenue
-        through gross trading fees.
-      </p>
-      <p className="story-subtitle">
-        Daily and weekly fee data confirms that the incentive system was directly
-        aligned with revenue-generating behavior, rather than passive engagement.
-      </p>
+    <SlideContainer>
+      <SlideItem className="story-kicker">Season 1 Economic Impact</SlideItem>
+      <SlideItem>
+        <h2 className="story-title">Revenue Generated During Season 1</h2>
+      </SlideItem>
+      <SlideItem>
+        <p className="story-subtitle">
+          Throughout Season 1, Limitless generated consistent protocol revenue
+          through gross trading fees.
+        </p>
+      </SlideItem>
+      <SlideItem>
+        <p className="story-subtitle">
+          Daily and weekly fee data confirms that the incentive system was directly
+          aligned with revenue-generating behavior, rather than passive engagement.
+        </p>
+      </SlideItem>
       {season1Points.length > 0 ? (
-        <div className="story-grid">
+        <SlideItem className="story-grid">
           <div className="story-metric">
             <span className="story-label">Season 1 total fees</span>
             <span className="story-number">{formatUsd(totalFees)}</span>
@@ -47,10 +54,12 @@ export default function Season1ImpactSlide({ points }: { points: FeesPoint[] }) 
             <span className="story-label">Days measured</span>
             <span className="story-number">{fmtNumber(season1Points.length)}</span>
           </div>
-        </div>
+        </SlideItem>
       ) : (
-        <p className="story-footnote">Data unavailable.</p>
+        <SlideItem>
+          <p className="story-footnote">Data unavailable.</p>
+        </SlideItem>
       )}
-    </div>
+    </SlideContainer>
   );
 }

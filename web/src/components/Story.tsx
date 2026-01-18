@@ -184,6 +184,13 @@ export default function Story() {
     if (target.closest("button, a, input, textarea, select, label, [data-no-advance]")) {
       return;
     }
+    const x = event.clientX;
+    const midpoint = window.innerWidth / 2;
+    if (x < midpoint) {
+      if (index === 0) return;
+      handleRetreat();
+      return;
+    }
     handleAdvance();
   };
 
@@ -213,6 +220,10 @@ export default function Story() {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
+      <div className="story-tap-zones" aria-hidden="true">
+        <div className="story-tap-zone left" />
+        <div className="story-tap-zone right" />
+      </div>
       <div className="story-progress">
         {slides.map((slide, idx) => (
           <span

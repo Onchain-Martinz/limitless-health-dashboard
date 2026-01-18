@@ -88,7 +88,7 @@ export default function ActivityBeforeAfterSlide({
       {showExtremeNote && (
         <SlideItem>
           <p className="story-footnote">
-            Yes — that jump looks extreme. It surprised us too. But this is what
+            Yes, that jump looks extreme. It surprised us too. But this is what
             the public data shows.
           </p>
         </SlideItem>

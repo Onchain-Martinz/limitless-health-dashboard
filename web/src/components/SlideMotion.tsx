@@ -14,25 +14,26 @@ type SlideItemProps = {
 const EASE_OUT: Easing = [0.22, 1, 0.36, 1];
 
 const containerVariants = {
-  hidden: { opacity: 0, y: 8 },
+  hidden: { opacity: 0, y: 10 },
   show: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.28,
+      duration: 0.35,
       ease: EASE_OUT,
       when: "beforeChildren",
-      staggerChildren: 0.08,
+      staggerChildren: 0.07,
+      delayChildren: 0.04,
     },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 6 },
+  hidden: { opacity: 0, y: 10 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.24, ease: EASE_OUT },
+    transition: { duration: 0.28, ease: EASE_OUT },
   },
 };
 

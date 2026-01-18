@@ -113,7 +113,7 @@ export default function FeesChartSlide({ points }: { points: FeesPoint[] }) {
       <SlideItem className="story-kicker">Revenue During Season 1</SlideItem>
       <SlideItem>
         <h2 className="story-title">
-          Season 1 didn’t just drive engagement — it drove revenue
+          Season 1 didn’t just drive engagement, it drove revenue
         </h2>
       </SlideItem>
       <SlideItem>

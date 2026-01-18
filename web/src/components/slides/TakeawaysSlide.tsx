@@ -9,7 +9,7 @@ export default function TakeawaysSlide() {
       </SlideItem>
       <SlideItem>
         <p className="story-subtitle">
-          The Limitless experiment shows that points systems can work — if
+          The Limitless experiment shows that points systems can work, if
           designed properly.
         </p>
       </SlideItem>
@@ -26,7 +26,7 @@ export default function TakeawaysSlide() {
       <SlideItem>
         <p className="story-subtitle">
           Points alone don’t guarantee long-term retention. But when done right,
-          they can drive real usage — not just hype.
+          they can drive real usage, not just hype.
         </p>
       </SlideItem>
       <SlideItem>

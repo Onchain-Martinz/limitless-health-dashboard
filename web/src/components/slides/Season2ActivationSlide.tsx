@@ -69,7 +69,7 @@ export default function Season2ActivationSlide({
       <SlideItem>
         <p className="story-subtitle">
           Weekly leaderboard data shows increased points accumulation, suggesting
-          that returning users — and new users — participated in the next season.
+          that returning users, and new users, participated in the next season.
         </p>
       </SlideItem>
       <SlideItem>
