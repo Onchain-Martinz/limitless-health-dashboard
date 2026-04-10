@@ -20,6 +20,15 @@ export default function AttributionSlide() {
         </div>
       </SlideItem>
       <SlideItem>
+        <div className="story-logo-wrap">
+          <img
+            className="story-logo"
+            src="/simon-logo.png"
+            alt="Simon logo"
+          />
+        </div>
+      </SlideItem>
+      <SlideItem>
         <p className="story-footnote">
           Follow on X: <a href="https://x.com/onchain_Martinz" target="_blank" rel="noopener noreferrer">@onchain_Martinz</a> | <a href="https://x.com/thisis_simon?s=21" target="_blank" rel="noopener noreferrer">@thisis_simon</a>
         </p>
