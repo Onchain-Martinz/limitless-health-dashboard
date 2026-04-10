@@ -5,7 +5,7 @@ export default function AttributionSlide() {
     <SlideContainer>
       <SlideItem className="story-kicker">Presented by</SlideItem>
       <SlideItem>
-        <h2 className="story-title">Martinz</h2>
+        <h2 className="story-title">Martinz & Simon</h2>
       </SlideItem>
       <SlideItem>
         <p className="story-subtitle">Product research & data storytelling</p>
@@ -20,7 +20,9 @@ export default function AttributionSlide() {
         </div>
       </SlideItem>
       <SlideItem>
-        <p className="story-footnote">Follow on X: @onchain_Martinz</p>
+        <p className="story-footnote">
+          Follow on X: <a href="https://x.com/onchain_Martinz" target="_blank" rel="noopener noreferrer">@onchain_Martinz</a> | <a href="https://x.com/thisis_simon?s=21" target="_blank" rel="noopener noreferrer">@thisis_simon</a>
+        </p>
       </SlideItem>
     </SlideContainer>
   );
